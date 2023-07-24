@@ -232,17 +232,7 @@ func Install(dir ...string) error {
 	if err := RunInstall(r); err != nil {
 		return err
 	}
-
-	pterm.Info.Println("Installation completed, press enter to go back to the shell.")
-
-	utils.Prompt("") //nolint:errcheck
-
-	// give tty1 back
-	svc, err := machine.Getty(1)
-	if err == nil {
-		svc.Start() //nolint: errcheck
-	}
-
+	
 	return nil
 }
 

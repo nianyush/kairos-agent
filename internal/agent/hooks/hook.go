@@ -1,7 +1,9 @@
 package hook
 
 import (
+	"fmt"
 	config "github.com/kairos-io/kairos-agent/v2/pkg/config"
+	"github.com/sanity-io/litter"
 )
 
 type Interface interface {
@@ -26,6 +28,7 @@ var FirstBoot = []Interface{
 
 func Run(c config.Config, hooks ...Interface) error {
 	for _, h := range hooks {
+		fmt.Println(litter.Sdump(h))
 		if err := h.Run(c); err != nil {
 			return err
 		}
