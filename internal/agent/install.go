@@ -234,10 +234,8 @@ func Install(dir ...string) error {
 	}
 	// If reboot or shutdown is not set, return control to user
 	if !cc.Install.Reboot && !cc.Install.Poweroff {
-		pterm.Info.Println("Installation completed, press enter to go back to the shell.")
-
-		utils.Prompt("") //nolint:errcheck
-
+		pterm.DefaultInteractiveContinue.Show("Installation completed, press enter to go back to the shell.")
+		
 		// give tty1 back
 		svc, err := machine.Getty(1)
 		if err == nil {
