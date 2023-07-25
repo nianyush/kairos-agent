@@ -86,6 +86,7 @@ func NewInstallSpec(cfg *Config) *v1.InstallSpec {
 	}
 
 	return &v1.InstallSpec{
+		Target:     cfg.Install.Device,
 		Firmware:   firmware,
 		PartTable:  v1.GPT,
 		Partitions: NewInstallElementalPartitions(),
