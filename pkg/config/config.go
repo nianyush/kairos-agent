@@ -2,7 +2,6 @@ package config
 
 import (
 	"fmt"
-	"github.com/spf13/viper"
 	"os"
 	"path/filepath"
 	"runtime"
@@ -17,6 +16,8 @@ import (
 	"github.com/kairos-io/kairos-sdk/collector"
 	"github.com/kairos-io/kairos-sdk/schema"
 	yip "github.com/mudler/yip/pkg/schema"
+	"github.com/sanity-io/litter"
+	"github.com/spf13/viper"
 	"github.com/twpayne/go-vfs"
 	"gopkg.in/yaml.v3"
 	"k8s.io/mount-utils"
@@ -67,6 +68,7 @@ func NewConfig(opts ...GenericOptions) *Config {
 		Platform:                  hostPlatform,
 		SquashFsCompressionConfig: constants.GetDefaultSquashfsCompressionOptions(),
 		ImageExtractor:            v1.OCIImageExtractor{},
+		SquashFsNoCompression:     true,
 	}
 	for _, o := range opts {
 		o(c)
@@ -92,6 +94,12 @@ func NewConfig(opts ...GenericOptions) *Config {
 
 	if c.Mounter == nil {
 		c.Mounter = mount.New(constants.MountBinary)
+	}
+
+	err = c.Sanitize()
+	// This should never happen
+	if err != nil {
+		c.Logger.Warnf("Error sanitizing the config: %s", err)
 	}
 
 	return c
@@ -365,6 +373,8 @@ func Scan(opts ...collector.Option) (c *Config, err error) {
 	}
 	// Config the logger
 	configLogger(result.Logger, result.Fs)
+
+	result.Logger.Debugf("Loaded config: %s", litter.Sdump(result))
 
 	return result, nil
 }

@@ -432,6 +432,10 @@ func ReadSpecFromCloudConfig(r *Config, spec string) (v1.Spec, error) {
 	if err != nil {
 		r.Logger.Warnf("error unmarshalling %s Spec: %s", spec, err)
 	}
+	err = sp.Sanitize()
+	if err != nil {
+		r.Logger.Warnf("Error sanitizing the % spec: %s", spec, err)
+	}
 	r.Logger.Debugf("Loaded %s spec: %s", litter.Sdump(sp))
 	return sp, err
 }
