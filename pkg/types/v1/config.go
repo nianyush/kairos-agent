@@ -82,6 +82,9 @@ func (i *InstallSpec) Sanitize() error {
 		i.Recovery.File = filepath.Join(recoveryMnt, "cOS", constants.RecoveryImgFile)
 	}
 
+	// Clean up any duplicated extra partitions
+	i.ExtraPartitions = i.ExtraPartitions.RemoveDuplicated()
+
 	// Check for extra partitions having set its size to 0
 	extraPartsSizeCheck := 0
 	for _, p := range i.ExtraPartitions {
@@ -225,6 +228,26 @@ func (pl PartitionList) GetByLabel(label string) *Partition {
 		}
 	}
 	return part
+}
+
+func (pl PartitionList) RemoveDuplicated() PartitionList {
+	var finalList PartitionList
+	for _, p := range pl {
+		// First time it will be empty so add without checking further
+		if len(finalList) == 0 {
+			finalList = append(finalList, p)
+		} else {
+			for _, f := range finalList {
+				// If it matches the full thing skip it, we already added it
+				if p.FilesystemLabel == f.FilesystemLabel && p.FS == f.FS && f.Size == p.Size {
+					continue
+				} else {
+					finalList = append(finalList, p)
+				}
+			}
+		}
+	}
+	return finalList
 }
 
 type ElementalPartitions struct {
