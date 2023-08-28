@@ -18,10 +18,11 @@ package action
 
 import (
 	"fmt"
-	"github.com/kairos-io/kairos-agent/v2/pkg/config"
 	"path/filepath"
 	"strings"
 	"time"
+
+	"github.com/kairos-io/kairos-agent/v2/pkg/config"
 
 	cnst "github.com/kairos-io/kairos-agent/v2/pkg/constants"
 	"github.com/kairos-io/kairos-agent/v2/pkg/elemental"
@@ -150,6 +151,8 @@ func (i InstallAction) Run() (err error) {
 			return err
 		}
 		// Partition device
+		fmt.Printf("i.spec = %+v\n", i.spec)
+		fmt.Printf("i.Partitions.Persistent = %+v\n", *i.spec.Partitions.Persistent)
 		err = e.PartitionAndFormatDevice(i.spec)
 		if err != nil {
 			return err

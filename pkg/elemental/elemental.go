@@ -19,10 +19,11 @@ package elemental
 import (
 	"errors"
 	"fmt"
-	v1 "github.com/kairos-io/kairos-agent/v2/pkg/types/v1"
-	"github.com/kairos-io/kairos-agent/v2/pkg/utils/fs"
 	"path/filepath"
 	"strings"
+
+	v1 "github.com/kairos-io/kairos-agent/v2/pkg/types/v1"
+	fsutils "github.com/kairos-io/kairos-agent/v2/pkg/utils/fs"
 
 	agentConfig "github.com/kairos-io/kairos-agent/v2/pkg/config"
 	cnst "github.com/kairos-io/kairos-agent/v2/pkg/constants"
@@ -69,6 +70,7 @@ func (e *Elemental) PartitionAndFormatDevice(i *v1.InstallSpec) error {
 		e.config.Logger.Errorf("Failed creating new partition table: %s", out)
 		return err
 	}
+	fmt.Printf("i.Partitions = %+v\n", i.Partitions)
 
 	parts := i.Partitions.PartitionsByInstallOrder(i.ExtraPartitions)
 	return e.createPartitions(disk, parts)
@@ -76,6 +78,7 @@ func (e *Elemental) PartitionAndFormatDevice(i *v1.InstallSpec) error {
 
 func (e *Elemental) createAndFormatPartition(disk *partitioner.Disk, part *v1.Partition) error {
 	e.config.Logger.Debugf("Adding partition %s", part.Name)
+	fmt.Printf("part = %+v\n", part)
 	num, err := disk.AddPartition(part.Size, part.FS, part.Name, part.Flags...)
 	if err != nil {
 		e.config.Logger.Errorf("Failed creating %s partition", part.Name)

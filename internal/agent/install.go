@@ -5,14 +5,15 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	fsutils "github.com/kairos-io/kairos-agent/v2/pkg/utils/fs"
-	"github.com/sanity-io/litter"
 	"net/url"
 	"os"
 	"path/filepath"
 	"strings"
 	"syscall"
 	"time"
+
+	fsutils "github.com/kairos-io/kairos-agent/v2/pkg/utils/fs"
+	"github.com/sanity-io/litter"
 
 	hook "github.com/kairos-io/kairos-agent/v2/internal/agent/hooks"
 	"github.com/kairos-io/kairos-agent/v2/internal/bus"
@@ -233,11 +234,13 @@ func RunInstall(c *config.Config) error {
 		c.Install.Device = detectDevice()
 	}
 
+	fmt.Printf("c = %+v\n", c)
 	// Load the installation spec from the Config
 	installSpec, err := config.ReadInstallSpecFromConfig(c)
 	if err != nil {
 		return err
 	}
+	fmt.Printf("installSpec.Partitions = %+v\n", *installSpec.Partitions.Persistent)
 
 	f, err := fsutils.TempFile(c.Fs, "", "kairos-install-config-xxx.yaml")
 	if err != nil {
