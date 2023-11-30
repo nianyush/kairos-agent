@@ -2,6 +2,8 @@ module github.com/kairos-io/kairos-agent/v2
 
 go 1.20
 
+replace github.com/kairos-io/kcrypt v0.7.1-0.20231130134136-42e451494ddd => ../kcrypt
+
 require (
 	github.com/Masterminds/semver/v3 v3.2.1
 	github.com/Masterminds/sprig/v3 v3.2.3
@@ -14,7 +16,7 @@ require (
 	github.com/jaypipes/ghw v0.12.0
 	github.com/joho/godotenv v1.5.1
 	github.com/kairos-io/kairos-sdk v0.0.15
-	github.com/kairos-io/kcrypt v0.7.1-0.20231130134136-42e451494ddd
+	github.com/kairos-io/kcrypt v0.7.1-0.20231130171015-554e350fb7c1
 	github.com/labstack/echo/v4 v4.11.1
 	github.com/mitchellh/mapstructure v1.5.0
 	github.com/mudler/go-nodepair v0.0.0-20221223092639-ba399a66fdfb
@@ -161,6 +163,7 @@ require (
 	github.com/swaggest/refl v1.2.0 // indirect
 	github.com/tredoe/osutil/v2 v2.0.0-rc.16 // indirect
 	github.com/ulikunitz/xz v0.5.11 // indirect
+	github.com/urfave/cli v1.22.14 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/fasttemplate v1.2.2 // indirect
 	github.com/vbatts/tar-split v0.11.3 // indirect
